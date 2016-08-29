@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.earcam</groupId>
+		<artifactId>io.earcam.maven</artifactId>
+		<version>2.0.0</version>
+	</parent>
+
+	<groupId>io.earcam.maven</groupId>
+	<artifactId>io.earcam.maven.toolchain</artifactId>
+	
+	<packaging>pom</packaging>
+
+
+	<name>${project.artifactId}</name>
+	<description>Maven toolchains.xml for various OS</description>
+
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.12</version>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>src/main/resources/toolchain/linux-debian.xml</file>
+									<type>xml</type>
+									<classifier>linux-debian</classifier>
+								</artifact>
+								<artifact>
+									<file>src/main/resources/toolchain/mac-osx.xml</file>
+									<type>xml</type>
+									<classifier>mac-osx</classifier>
+								</artifact>
+								<artifact>
+									<file>src/main/resources/toolchain/windows.xml</file>
+									<type>xml</type>
+									<classifier>windows</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
