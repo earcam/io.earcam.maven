@@ -42,6 +42,12 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	
+	<scm>
+		<connection>scm:git:git://github.com/earcam/io.earcam.maven.git</connection>
+		<developerConnection>scm:git:ssh://github.com:earcam/io.earcam.maven.git</developerConnection>
+		<url>http://github.com/earcam/io.earcam.maven/tree/master</url>
+	</scm>
 
 	<properties>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
