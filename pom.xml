@@ -25,6 +25,9 @@
 		</developer>
 	</developers>
 
+	<url>http://github.com/earcam/io.earcam.maven</url>
+	<inceptionYear>2014</inceptionYear>
+
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
