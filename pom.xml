@@ -48,6 +48,12 @@
 		<developerConnection>scm:git:ssh://github.com:earcam/io.earcam.maven.git</developerConnection>
 		<url>http://github.com/earcam/io.earcam.maven/tree/master</url>
 	</scm>
+	
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://travis-ci.org/earcam/io.earcam.maven</url>
+	</ciManagement>
+
 
 	<properties>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
