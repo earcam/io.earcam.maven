@@ -4,7 +4,7 @@
 
 	<groupId>io.earcam</groupId>
 	<artifactId>io.earcam.maven</artifactId>
-	<version>2.0.0</version>
+	<version>2.0.1-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
@@ -73,31 +73,24 @@
 	<profiles>
 		<profile>
 			<id>semantic-versioning</id>
-			<!-- requires module/project define property "version.earcam.this.old" -->
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>com.github.siom79.japicmp</groupId>
-						<artifactId>japicmp-maven-plugin</artifactId>
-						<version>0.9.0</version>
+						<groupId>org.revapi</groupId>
+						<artifactId>revapi-maven-plugin</artifactId>
+						<version>0.7.0</version>
 						<configuration>
-							<parameter>
-								<oldVersionPattern>\d+\.\d+\.\d+</oldVersionPattern>
-								<breakBuildBasedOnSemanticVersioning>true</breakBuildBasedOnSemanticVersioning>
-								<ignoreMissingOldVersion>true</ignoreMissingOldVersion>
-								<skipXmlReport>true</skipXmlReport>
-								<skipDiffReport>true</skipDiffReport>
-								<skipPomModules>true</skipPomModules>
-							</parameter>
+							<failOnUnresolvedArtifacts>false</failOnUnresolvedArtifacts>
+							<failOnUnresolvedDependencies>false</failOnUnresolvedDependencies>
 						</configuration>
 						<executions>
 							<execution>
-								<phase>verify</phase>
+								<id>api-check</id>
 								<goals>
-									<goal>cmp</goal>
+									<goal>check</goal>
 								</goals>
 							</execution>
 						</executions>
@@ -113,12 +106,67 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+			
 			<properties>
 				<sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
 				<sonar.language>java</sonar.language>
-				<sonar.pit.target.classes>io.earcam.*</sonar.pit.target.classes>
-				<sonar.pit.target.tests>io.earcam.*</sonar.pit.target.tests>
+				<sonar.pitest.mode>reuseReport</sonar.pitest.mode>
 			</properties>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.7.7.201606060606</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+								<configuration>
+									<propertyName>surefire.argLine</propertyName>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<argLine>${surefire.argLine} -XX:MaxPermSize=512m</argLine>
+						</configuration>
+					</plugin>					
+
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>1.1.10</version>
+						<configuration>
+							<inScopeClasses>
+								<param>io.earcam.*</param>
+							</inScopeClasses>
+							<targetClasses>
+								<param>${project.artifactId}.*</param>
+							</targetClasses>
+							<targetTests>
+								<param>io.earcam.*</param>
+							</targetTests>
+							<outputFormats>
+								<outputFormat>XML</outputFormat>
+							</outputFormats>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>			
 		</profile>	
 
 
