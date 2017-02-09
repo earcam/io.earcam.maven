@@ -172,7 +172,7 @@
 
 		<profile>
 			<id>distribute</id>
-			<!-- requires GPG keypass, and must be used in combination with profile "semantic-versioning" -->
+			<!-- requires GPG keypass -->
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
