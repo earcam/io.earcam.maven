@@ -4,7 +4,7 @@
 
 	<groupId>io.earcam</groupId>
 	<artifactId>io.earcam.maven</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.0.1</version>
 
 	<packaging>pom</packaging>
 
@@ -45,7 +45,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<scm>
 		<connection>scm:git:git://github.com/earcam/io.earcam.maven.git</connection>
 		<developerConnection>scm:git:ssh://github.com:earcam/io.earcam.maven.git</developerConnection>
