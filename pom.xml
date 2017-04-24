@@ -4,7 +4,7 @@
 
 	<groupId>io.earcam</groupId>
 	<artifactId>io.earcam.maven</artifactId>
-	<version>2.0.1</version>
+	<version>2.0.2</version>
 
 	<packaging>pom</packaging>
 
@@ -74,7 +74,7 @@
 		<profile>
 			<id>semantic-versioning</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
