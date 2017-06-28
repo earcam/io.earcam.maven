@@ -84,7 +84,6 @@
 		<!-- Stuck on 3.3, can't bump to 3.5.1 due to Reflow Skin, so can't use velocity #include --> 
 		<version.maven.plugin.site>3.3</version.maven.plugin.site>
 
-		<url.site.deploy />
 	</properties>
 
 
@@ -146,11 +145,18 @@
 				<plugin>
 					<groupId>org.revapi</groupId>
 					<artifactId>revapi-maven-plugin</artifactId>
-					<version>0.7.0</version>
+					<version>0.9.1</version>
 					<configuration>
 						<failOnUnresolvedArtifacts>false</failOnUnresolvedArtifacts>
 						<failOnUnresolvedDependencies>false</failOnUnresolvedDependencies>
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.revapi</groupId>
+							<artifactId>revapi-java</artifactId>
+							<version>0.14.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				
 				<plugin>
@@ -349,14 +355,10 @@
 
 		<profile>
 			<id>publish-site</id>
-			<!-- requires profile "site" -->
+			<!-- requires GitHub credentials, this should be in settings.xml in server section -->
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-			
-			<properties>
-				<url.site.deploy>http://github.com/earcam/${project.artifactId}/tree/gh-pages/</url.site.deploy>
-			</properties>
 
 			<build>
 				<plugins>
@@ -388,7 +390,7 @@
 						<artifactId>site-maven-plugin</artifactId>
 						<configuration>
 							<message>Creating site for ${project.artifactId}, ${project.version}</message>
-							<path>${project.distributionManagement.site.url}</path>
+							<server>github</server>
 						</configuration>
 						<executions>
 							<execution>
@@ -594,6 +596,7 @@
 
 		<profile>
 			<id>publish</id>
+			<!-- requires Sonatype credentials, this should be in settings.xml in server section -->
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
