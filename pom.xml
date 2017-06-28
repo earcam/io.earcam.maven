@@ -54,7 +54,7 @@
 		<connection>scm:git:git://github.com/earcam/io.earcam.maven.git</connection>
 		<developerConnection>scm:git:ssh://github.com:earcam/io.earcam.maven.git</developerConnection>
 		<url>http://github.com/earcam/io.earcam.maven/tree/master</url>
-	  <tag>HEAD</tag>
+	  <tag>v2.0.4</tag>
 	</scm>
 	
 	<ciManagement>
@@ -298,7 +298,11 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-			
+
+			<properties>
+				<earcam.profile.site>true</earcam.profile.site>
+			</properties>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -312,9 +316,11 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireActiveProfile>
-											<profiles>analyse</profiles>
-										</requireActiveProfile>
+										<requireProperty>
+											<property>earcam.profile.analyse</property>
+											<regex>^true$</regex>
+											<message>Profile "signature" NOT active</message>
+										</requireProperty>
 									</rules>
 									<fail>true</fail>
 								</configuration>
@@ -351,7 +357,7 @@
 			<properties>
 				<url.site.deploy>http://github.com/earcam/${project.artifactId}/tree/gh-pages/</url.site.deploy>
 			</properties>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -365,9 +371,11 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireActiveProfile>
-											<profiles>site</profiles>
-										</requireActiveProfile>
+										<requireProperty>
+											<property>earcam.profile.site</property>
+											<regex>^true$</regex>
+											<message>Profile "site" NOT active</message>
+										</requireProperty>
 									</rules>
 									<fail>true</fail>
 								</configuration>
@@ -398,7 +406,7 @@
 	
 		<profile>
 			<id>analyse</id>
-			<!-- requires sonar settings -->
+			<!-- required for sonarqube -->
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
@@ -406,6 +414,8 @@
 			<properties>
 				<sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
 				<sonar.pitest.mode>reuseReport</sonar.pitest.mode>
+				
+				<earcam.profile.analyse>true</earcam.profile.analyse>
 			</properties>
 
 			<build>
@@ -455,6 +465,14 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+
+			<properties>
+				<sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
+				<sonar.pitest.mode>reuseReport</sonar.pitest.mode>
+
+				<earcam.profile.distribute>true</earcam.profile.distribute>
+			</properties>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -468,16 +486,18 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireActiveProfile>
-											<profiles>signature</profiles>
-										</requireActiveProfile>
+										<requireProperty>
+											<property>earcam.profile.signature</property>
+											<regex>^true$</regex>
+											<message>Profile "signature" NOT active</message>
+										</requireProperty>
 									</rules>
 									<fail>true</fail>
 								</configuration>
 							</execution>
 						</executions>
 					</plugin>
-				
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
@@ -590,9 +610,11 @@
 								</goals>
 								<configuration>
 									<rules>
-										<requireActiveProfile>
-											<profiles>distribute</profiles>
-										</requireActiveProfile>
+										<requireProperty>
+											<property>earcam.profile.distribute</property>
+											<regex>^true$</regex>
+											<message>Profile "distribute" NOT active</message>
+										</requireProperty>
 									</rules>
 									<fail>true</fail>
 								</configuration>
