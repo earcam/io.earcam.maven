@@ -5,6 +5,7 @@
   "cache": {
     "directories": [
       "$HOME/.m2/repository",
+<<<<<<< HEAD
       "$HOME/apache-maven-3.5.0"
     ]
   },
@@ -12,6 +13,18 @@
     "apt": {
       "packages": [
         "graphviz"
+=======
+      "$HOME/.sonar/cache",
+      "$HOME/apache-maven-3.5.0"
+    ]
+  },
+  "addons": {
+    "apt": {
+      "packages": [
+      	"gpgv2",
+        "graphviz",
+        "ca-certificates"
+>>>>>>> branch 'master' of git@github.com:earcam/io.earcam.maven.git
       ]
     },
   },
