@@ -17,4 +17,4 @@ dependencies:
     - "cp ./io.earcam.maven.toolchain/src/main/resources/toolchain/linux-debian-amd64.xml ~/.m2/toolchains.xml"
   test: 
     override: 
-      - "mvn -P analyse,site clean install"
+      - "mvn -DskipTests -DskipITs clean install"
