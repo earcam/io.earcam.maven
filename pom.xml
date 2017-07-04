@@ -173,17 +173,19 @@
 						<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
 					</configuration>
 					<dependencies>
+						<!-- 
 						<dependency>
 							<groupId>pl.matsuo.maven.skins</groupId>
 							<artifactId>msb3-velocity-tools</artifactId>
 							<version>0.1.2-SNAPSHOT</version>
 						</dependency>
+						 -->
 
- 						<!-- <dependency>
+ 						<dependency>
 							<groupId>lt.velykis.maven.skins</groupId>
 							<artifactId>reflow-velocity-tools</artifactId>
 							<version>${version.reflow}</version>
-						</dependency> -->
+						</dependency>
 						
  						<dependency> 
  							<groupId>org.apache.velocity</groupId> 
