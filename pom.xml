@@ -77,6 +77,15 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<version.java.platform>8</version.java.platform>
+		<version.java>1.${version.java.platform}</version.java>
+		<maven.compiler.source>${version.java}</maven.compiler.source>
+		<maven.compiler.target>${version.java}</maven.compiler.target>
+
+		<coordinate.username.project>earcam/${project.artifactId}</coordinate.username.project>
+
+		<sonar.java.source>${version.java.platform}</sonar.java.source>
+
 		<version.reflow>1.1.1</version.reflow>
 		<version.pitest>1.2.0</version.pitest>
 		<version.jacoco>0.7.9</version.jacoco>
@@ -87,6 +96,7 @@
 		
 		<version.min.maven>3.3.9</version.min.maven>
 
+		<skip.execution.pitest>true</skip.execution.pitest>
 	</properties>
 
 
@@ -98,6 +108,31 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-toolchains-plugin</artifactId>
+										<versionRange>[1.1,)</versionRange>
+										<goals>
+											<goal>toolchain</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
@@ -115,7 +150,20 @@
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>2.7</version>
 				</plugin>
-			
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-toolchains-plugin</artifactId>
+					<version>1.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>toolchain</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
@@ -192,6 +240,7 @@
 					<artifactId>pitest-maven</artifactId>
 					<version>${version.pitest}</version>
 					<configuration>
+						<skip>${skip.execution.pitest}</skip>
 						<inScopeClasses>
 							<param>io.earcam.*</param>
 						</inScopeClasses>
@@ -291,6 +340,11 @@
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+					</plugin>
+				
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-enforcer-plugin</artifactId>
 						<configuration>
 							<rules>
@@ -332,7 +386,108 @@
 				</plugins>
 			</build>
 		</profile>
-	
+
+		<profile>
+			<id>jdk-oracle</id>
+			
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+						<configuration>
+							<toolchains>
+								<jdk>
+									<version>${maven.compiler.target}</version>
+									<vendor>oracle</vendor>
+								</jdk>
+							</toolchains>
+						</configuration>
+					</plugin>				
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>jdk-azul</id>
+			
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+						<configuration>
+							<toolchains>
+								<jdk>
+									<version>${maven.compiler.target}</version>
+									<vendor>azul</vendor>
+								</jdk>
+							</toolchains>
+						</configuration>
+					</plugin>				
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>jdk-openjdk</id>
+			
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+						<configuration>
+							<toolchains>
+								<jdk>
+									<version>${maven.compiler.target}</version>
+									<vendor>openjdk</vendor>
+								</jdk>
+							</toolchains>
+						</configuration>
+					</plugin>				
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>jdk-ibm</id>
+			
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+						<configuration>
+							<toolchains>
+								<jdk>
+									<version>${maven.compiler.target}</version>
+									<vendor>ibm</vendor>
+								</jdk>
+							</toolchains>
+						</configuration>
+					</plugin>				
+				</plugins>
+			</build>
+		</profile>
+
+
 		<profile>
 			<id>site</id>
 			<activation>

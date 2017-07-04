@@ -29,6 +29,9 @@
 			<plugin>
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
+				<configuration>
+					<skip>${skip.execution.pitest}</skip>
+				</configuration>
 				<reportSets>
 					<reportSet>
 						<reports>

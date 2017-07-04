@@ -7,7 +7,7 @@
 		<provides>
 			<id>EmbeddedZulu-8</id>
 			<version>1.8</version>
-			<vendor>azure</vendor>
+			<vendor>Azul</vendor>
 		</provides>
 		<configuration>
 			<jdkHome>/usr/lib/jvm/ezdk-1.8.0_112-8.19.0.31-eval-linux_aarch32hf</jdkHome>
@@ -19,7 +19,7 @@
 		<provides>
 			<id>OpenJDK-8</id>
 			<version>1.8</version>
-			<vendor>OpenJDK</vendor>
+			<vendor>openjdk</vendor>
 		</provides>
 		<configuration>
 			<jdkHome>/usr/lib/jvm/java-8-openjdk-armhf</jdkHome>
@@ -31,7 +31,7 @@
 		<provides>
 			<id>OpenJDK-8</id>
 			<version>1.8</version>
-			<vendor>OpenJDK</vendor>
+			<vendor>openjdk</vendor>
 		</provides>
 		<configuration>
 			<jdkHome>/usr/lib/jvm/java-7-openjdk-armhf</jdkHome>
