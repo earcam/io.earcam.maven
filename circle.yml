@@ -7,6 +7,7 @@ dependencies:
     - "$HOME/apache-maven-3.5.0"
   override: 
     - "mvn -v"
+    - "sudo ln -s /usr/lib/jvm/jdk1.8.0 /usr/lib/jvm/java-8-oracle"
   pre:
     - "mkdir -p $HOME/.m2/repository"
     - "export M2_HOME=$HOME/apache-maven-3.5.0"
