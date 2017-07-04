@@ -24,7 +24,7 @@
     "chmod go-rwx -R $HOME/.m2"
   ],
   "before_script": [
-  	"cp ./io.earcam.maven.toolchain/src/main/resources/toolchain/linux-debian-amd64.xml ~/.m2/toolchains.xml"
+  	"cp ./io.earcam.maven.toolchain/src/main/resources/toolchain/linux-debian-amd64.xml ~/.m2/toolchains.xml",
     "mvn -v"
   ],
   "script": [
