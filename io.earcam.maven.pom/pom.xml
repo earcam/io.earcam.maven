@@ -15,16 +15,30 @@
 
 	<description>Parent/root POM</description>
 
-
 	<reporting>
+	<!-- Must be run with the "report" profile -->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
 					<topSiteURL>http://earcam.io</topSiteURL>
+					<generateSitemap>true</generateSitemap>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.revapi</groupId>
+				<artifactId>revapi-maven-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report</report>
+							<report>report-aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>			
 
 			<plugin>
 				<groupId>org.pitest</groupId>
@@ -57,6 +71,26 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6.6</version>
+					</docletArtifact>
+					<!--
+					http://www.umlgraph.org/doc/indexw.html
+					http://www.umlgraph.org/doc/cd-umldoc.html
+					 -->
+					<additionalparam>-views -all -inferdep -inferrel</additionalparam>
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+					<links>
+						<link>http://docs.oracle.com/javase/${version.java.platform}/docs/api</link>
+					</links>
+					<failOnError>false</failOnError>
+					<verbose>true</verbose>
+					<debug>true</debug>
+				</configuration>
 				<reportSets>
 					<reportSet>
 						<id>main</id>
@@ -135,20 +169,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>2.9</version>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>index</report>
-						</reports>
-					</reportSet>
-				</reportSets>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
 				<version>2.4</version>
 			</plugin>
+
 			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -165,19 +193,6 @@
 				</reportSets>			
 			</plugin>
 			
-			<!-- <plugin>
-				<groupId>org.revapi</groupId>
-				<artifactId>revapi-maven-plugin</artifactId>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>report</report>
-							<report>report-aggregate</report>
-						</reports>
-					</reportSet>
-				</reportSets>
-			</plugin> -->
-			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
@@ -186,7 +201,7 @@
 					<targetjdk>${version.java}</targetjdk>
 					<linkXref>true</linkXref>
 					<format>xml</format>
-					<sourceEncoding>utf-8</sourceEncoding>
+					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
 					<minimumTokens>100</minimumTokens>
 				</configuration>
 				<reportSets>
