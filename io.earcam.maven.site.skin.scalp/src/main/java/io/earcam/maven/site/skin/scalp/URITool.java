@@ -49,7 +49,7 @@ public final class URITool {
 	{
 		// taken from org.apache.maven.doxia.site.decoration.inheritance.DecorationModelInheritanceAssembler
 
-		if (link == null || baseDirUri == null) {
+		if(link == null || baseDirUri == null) {
 			return link;
 		}
 
@@ -59,7 +59,7 @@ public final class URITool {
 			final URIPathDescriptor path = new URIPathDescriptor(baseDirUri, link);
 			return path.relativizeLink().toString();
 
-		} catch (IllegalArgumentException e) {
+		} catch(IllegalArgumentException e) {
 			return link;
 		}
 	}

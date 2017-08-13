@@ -96,27 +96,27 @@ public class SkinConfigTool extends SafeConfig {
 	protected void configure(ValueParser values)
 	{
 		String altkey = values.getString("key");
-		if (altkey != null) {
+		if(altkey != null) {
 			setKey(altkey);
 		}
 
 		// allow changing skin key in the configuration
 		String altSkinKey = values.getString("skinKey");
-		if (altSkinKey != null) {
+		if(altSkinKey != null) {
 			this.skinKey = altSkinKey;
 		}
 
 		// retrieve the decoration model from Velocity context
 		Object velocityContext = values.get("velocityContext");
 
-		if (!(velocityContext instanceof ToolContext)) {
+		if(!(velocityContext instanceof ToolContext)) {
 			return;
 		}
 
 		ToolContext ctxt = (ToolContext) velocityContext;
 
 		Object projectObj = ctxt.get("project");
-		if (projectObj instanceof MavenProject) {
+		if(projectObj instanceof MavenProject) {
 			MavenProject project = (MavenProject) projectObj;
 			String artifactId = project.getArtifactId();
 			// use artifactId "sluggified" as the projectId
@@ -125,13 +125,13 @@ public class SkinConfigTool extends SafeConfig {
 
 		// calculate the page ID from the current file name
 		Object currentFileObj = ctxt.get("currentFileName");
-		if (currentFileObj instanceof String) {
+		if(currentFileObj instanceof String) {
 
 			String currentFile = (String) currentFileObj;
 
 			// drop the extension
 			int lastDot = currentFile.lastIndexOf(".");
-			if (lastDot >= 0) {
+			if(lastDot >= 0) {
 				currentFile = currentFile.substring(0, lastDot);
 			}
 
@@ -142,14 +142,14 @@ public class SkinConfigTool extends SafeConfig {
 
 		Object decorationObj = ctxt.get("decoration");
 
-		if (!(decorationObj instanceof DecorationModel)) {
+		if(!(decorationObj instanceof DecorationModel)) {
 			return;
 		}
 
 		DecorationModel decoration = (DecorationModel) decorationObj;
 		Object customObj = decoration.getCustom();
 
-		if (!(customObj instanceof Xpp3Dom)) {
+		if(!(customObj instanceof Xpp3Dom)) {
 			return;
 		}
 
@@ -159,20 +159,20 @@ public class SkinConfigTool extends SafeConfig {
 		Xpp3Dom skinNode = customNode.getChild(skinKey);
 		String namespaceKey = ":" + skinKey;
 
-		if (skinNode == null) {
+		if(skinNode == null) {
 			// try searching with any namespace
-			for (Xpp3Dom child : customNode.getChildren()) {
-				if (child.getName().endsWith(namespaceKey)) {
+			for(Xpp3Dom child : customNode.getChildren()) {
+				if(child.getName().endsWith(namespaceKey)) {
 					skinNode = child;
 					break;
 				}
 			}
 		}
 
-		if (skinNode != null) {
+		if(skinNode != null) {
 			globalProperties = skinNode;
 
-			if (skinNode.getName().endsWith(namespaceKey)) {
+			if(skinNode.getName().endsWith(namespaceKey)) {
 				// extract the namespace (including the colon)
 				namespace = skinNode.getName().substring(0, skinNode.getName().length() - namespaceKey.length() + 1);
 			}
@@ -180,7 +180,7 @@ public class SkinConfigTool extends SafeConfig {
 			// for page properties, retrieve the file name and drop the `.html`
 			// extension - this will be used, i.e. `index` instead of `index.html`
 			Xpp3Dom pagesNode = getChild(skinNode, "pages");
-			if (pagesNode != null) {
+			if(pagesNode != null) {
 
 				// Get the page for the file
 				// TODO try fileShortId as well?
@@ -189,15 +189,15 @@ public class SkinConfigTool extends SafeConfig {
 				// Now check if the project artifact ID is set, and if so, if it matches the
 				// current project. This allows preventing accidental reuse of parent page
 				// configs in children modules
-				if (page != null && projectId != null) {
+				if(page != null && projectId != null) {
 					String pageProject = page.getAttribute("project");
-					if (pageProject != null && !projectId.equals(pageProject)) {
+					if(pageProject != null && !projectId.equals(pageProject)) {
 						// project ID indicated, and is different - do not use the config
 						page = null;
 					}
 				}
 
-				if (page != null) {
+				if(page != null) {
 					pageProperties = page;
 				}
 			}
@@ -214,7 +214,7 @@ public class SkinConfigTool extends SafeConfig {
 	private Xpp3Dom getChild(Xpp3Dom parentNode, String name)
 	{
 		Xpp3Dom child = parentNode.getChild(name);
-		if (child != null) {
+		if(child != null) {
 			return child;
 		}
 
@@ -228,7 +228,7 @@ public class SkinConfigTool extends SafeConfig {
 	 */
 	protected void setKey(String key)
 	{
-		if (key == null) {
+		if(key == null) {
 			throw new NullPointerException("SkinConfigTool key cannot be null");
 		}
 		this.key = key;
@@ -263,7 +263,7 @@ public class SkinConfigTool extends SafeConfig {
 
 		// first try page properties
 		Xpp3Dom propNode = getChild(pageProperties, property);
-		if (propNode == null) {
+		if(propNode == null) {
 			// try global
 			propNode = getChild(globalProperties, property);
 		}
@@ -286,7 +286,7 @@ public class SkinConfigTool extends SafeConfig {
 
 		Xpp3Dom propNode = get(property);
 
-		if (propNode == null) {
+		if(propNode == null) {
 			// not found
 			return null;
 		}
