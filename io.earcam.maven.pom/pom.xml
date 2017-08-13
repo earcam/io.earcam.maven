@@ -231,4 +231,33 @@
 			</plugin>			
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<profile>
+			<id>strict</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>net.revelc.code.formatter</groupId>
+						<artifactId>formatter-maven-plugin</artifactId>
+						<configuration>
+							<configFile>eclipse/formatter.xml</configFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>strict-format</id>
+								<goals>
+									<goal>validate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
