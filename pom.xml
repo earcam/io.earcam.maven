@@ -4,7 +4,7 @@
 
 	<groupId>io.earcam</groupId>
 	<artifactId>io.earcam.maven</artifactId>
-	<version>2.0.8-SNAPSHOT</version>
+	<version>2.1.0</version>
 	<packaging>pom</packaging>
 
 	<name>${project.artifactId}</name>
@@ -59,7 +59,8 @@
 		<connection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</connection>
 		<developerConnection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</developerConnection>
 		<url>http://bitbucket.org/earcam/io.earcam.maven.git</url>
-	</scm>
+	  <tag>io.earcam.maven-2.1.0</tag>
+  </scm>
 	<ciManagement>
 		<system>Jenkins</system>
 		<url>https://travis-ci.org/earcam/io.earcam.maven</url>
@@ -77,7 +78,7 @@
 
 	<properties>
 		<!-- can't use ${project.version} for dependency in maven-site-plugin as inherited first then resolved-->
-		<earcam.maven.project.version>2.0.8-SNAPSHOT</earcam.maven.project.version>
+		<earcam.maven.project.version>2.1.0</earcam.maven.project.version>
 	
 	
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -103,7 +104,7 @@
 		<skip.execution.pitest>true</skip.execution.pitest>
 		
 		<site.url>http://localhost:8080/</site.url>
-		<earcam.project.name.short></earcam.project.name.short>
+		<earcam.project.name.short />
 		
 	</properties>
 
@@ -167,7 +168,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
