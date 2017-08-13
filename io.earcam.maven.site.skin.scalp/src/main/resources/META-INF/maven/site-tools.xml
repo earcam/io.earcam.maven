@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is included in the classpath for Velocity to find -->
+<tools>
+  <toolbox scope="application">
+    <tool key="config" class="io.earcam.maven.site.skin.scalp.SkinConfigTool"/>
+    <tool key="htmlTool" class="io.earcam.maven.site.skin.scalp.HtmlTool"/>
+    <tool key="uriTool" class="io.earcam.maven.site.skin.scalp.URITool"/>
+    <tool key="escape" class="org.apache.velocity.tools.generic.EscapeTool" />
+  </toolbox>
+</tools>

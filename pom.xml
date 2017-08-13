@@ -1,32 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.earcam</groupId>
 	<artifactId>io.earcam.maven</artifactId>
 	<version>2.0.8-SNAPSHOT</version>
-
 	<packaging>pom</packaging>
 
 	<name>${project.artifactId}</name>
-	<description>DRY Maven, parent/root POM and toolchains.xml</description>
-
+	<description>DRY Maven: parent/root POM, maven site skin and toolchains.xml</description>
+	<url>http://bitbucket.org/earcam/io.earcam.maven</url>
+	<inceptionYear>2014</inceptionYear>
 	<organization>
 		<name>earcam</name>
-		<url>http://earcam.io</url>
+		<url>https://earcam.io</url>
 	</organization>
-
-	<developers>
-		<developer>
-			<name>Caspar J. MacRae</name>
-			<id>earcam</id>
-			<timezone>Europe/London</timezone>
-			<url>https://ea.rc.am</url>
-		</developer>
-	</developers>
-
-	<url>http://github.com/earcam/io.earcam.maven</url>
-	<inceptionYear>2014</inceptionYear>
-
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
@@ -50,18 +38,32 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<name>Caspar J. MacRae</name>
+			<id>earcam</id>
+			<timezone>Europe/London</timezone>
+			<url>https://ea.rc.am</url>
+		</developer>
+	</developers>
+
+	<modules>
+		<module>io.earcam.maven.configuration</module>
+		<module>io.earcam.maven.pom</module>
+		<module>io.earcam.maven.toolchain</module>
+		<module>io.earcam.maven.site.skin</module>
+		<module>io.earcam.maven.site.skin.scalp</module>
+	</modules>
+
 	<scm>
-		<connection>scm:git:git://github.com/earcam/io.earcam.maven.git</connection>
-		<developerConnection>scm:git:ssh://github.com:earcam/io.earcam.maven.git</developerConnection>
-		<url>http://github.com/earcam/io.earcam.maven/tree/master</url>
-	  <tag>v2.0.4</tag>
+		<connection>scm:git:git://bitbucket.org/earcam/io.earcam.maven.git</connection>
+		<developerConnection>scm:git:ssh://bitbucket.org:earcam/io.earcam.maven.git</developerConnection>
+		<url>http://bitbucket.org/earcam/io.earcam.maven/tree/master</url>
 	</scm>
-	
 	<ciManagement>
 		<system>Jenkins</system>
 		<url>https://travis-ci.org/earcam/io.earcam.maven</url>
 	</ciManagement>
-
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -74,6 +76,10 @@
 	</distributionManagement>
 
 	<properties>
+		<!-- can't use ${project.version} for dependency in maven-site-plugin as inherited first then resolved-->
+		<earcam.maven.project.version>2.0.8-SNAPSHOT</earcam.maven.project.version>
+	
+	
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -86,25 +92,20 @@
 
 		<sonar.java.source>${version.java.platform}</sonar.java.source>
 
-		<version.reflow>1.1.1</version.reflow>
 		<!-- <version.pitest>1.2.0</version.pitest> --> <!-- analysis failing -->
 		<version.pitest>1.2.0</version.pitest>
 		<version.jacoco>0.7.9</version.jacoco>
 		
-		<!-- Stuck on 3.3, can't bump to 3.5.1 due to Reflow Skin, so can't use velocity #include --> 
-		<!-- <version.maven.plugin.site>3.6</version.maven.plugin.site> -->
-		<version.maven.plugin.site>3.3</version.maven.plugin.site>
+		<version.maven.plugin.site>3.6</version.maven.plugin.site>
 		
 		<version.min.maven>3.3.9</version.min.maven>
 
 		<skip.execution.pitest>true</skip.execution.pitest>
+		
+		<site.url>http://localhost:8080/</site.url>
+		<earcam.project.name.short></earcam.project.name.short>
+		
 	</properties>
-
-
-	<modules>
-		<module>io.earcam.maven.pom</module>
-		<module>io.earcam.maven.toolchain</module>
-	</modules>
 
 	<build>
 		<pluginManagement>
@@ -127,6 +128,46 @@
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-scm-plugin</artifactId>
+										<versionRange>[1.9.5,)</versionRange>
+										<goals>
+											<goal>checkout</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>io.swagger</groupId>
+										<artifactId>swagger-codegen-maven-plugin</artifactId>
+										<versionRange>[2.2.2,)</versionRange>
+										<goals>
+											<goal>generate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>net.revelc.code.formatter</groupId>
+										<artifactId>formatter-maven-plugin</artifactId>
+										<versionRange>[2.0.1,)</versionRange>
+										<goals>
+											<goal>validate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -170,36 +211,17 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${version.maven.plugin.site}</version>
 					<configuration>
+						<validate>true</validate>
 						<inputEncoding>${project.reporting.outputEncoding}</inputEncoding>
 						<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
 					</configuration>
 					<dependencies>
-						<!-- 
 						<dependency>
-							<groupId>pl.matsuo.maven.skins</groupId>
-							<artifactId>msb3-velocity-tools</artifactId>
-							<version>0.1.2-SNAPSHOT</version>
+							<groupId>io.earcam.maven</groupId>
+							<artifactId>io.earcam.maven.site.skin.scalp</artifactId>
+							<version>${earcam.maven.project.version}</version>
 						</dependency>
-						 -->
-
- 						<dependency>
-							<groupId>lt.velykis.maven.skins</groupId>
-							<artifactId>reflow-velocity-tools</artifactId>
-							<version>${version.reflow}</version>
-						</dependency>
-						
- 						<dependency> 
- 							<groupId>org.apache.velocity</groupId> 
- 							<artifactId>velocity</artifactId> 
- 							<version>1.7</version> 
- 						</dependency> 
 					</dependencies>
-				</plugin>
-
-				<plugin>
-					<groupId>com.github.github</groupId>
-					<artifactId>site-maven-plugin</artifactId>
-					<version>0.12</version>
 				</plugin>
 
 				<plugin>
@@ -244,6 +266,7 @@
 					<artifactId>pitest-maven</artifactId>
 					<version>${version.pitest}</version>
 					<configuration>
+						<skip>${skip.execution.pitest}</skip>
 						<inScopeClasses>
 							<param>io.earcam.*</param>
 						</inScopeClasses>
@@ -326,568 +349,40 @@
 				</plugin>
 
 				<plugin>
-					<groupId>com.github.s4u.plugins</groupId>
-					<artifactId>sitemapxml-maven-plugin</artifactId>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>tidy-maven-plugin</artifactId>
 					<version>1.0.0</version>
+					<!-- thankfully this plugin doesn't mandate the idiotic preference for spaces over tabs -->
+				</plugin>
+
+				<plugin>
+					<groupId>net.revelc.code.formatter</groupId>
+					<artifactId>formatter-maven-plugin</artifactId>
+					<version>2.0.1</version>
+					<configuration>
+						<configFile>eclipse/formatter.xml</configFile>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>io.earcam.maven</groupId>
+							<artifactId>io.earcam.maven.configuration</artifactId>
+							<version>${earcam.maven.project.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+
+				<plugin>
+					<groupId>org.owasp</groupId>
+					<artifactId>dependency-check-maven</artifactId>
+					<version>2.1.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-invoker-plugin</artifactId>
+					<version>3.0.1</version>
 				</plugin>
 			</plugins>		
 		</pluginManagement>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>strict</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-					</plugin>
-				
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<configuration>
-							<rules>
-								<banTransitiveDependencies>
-									<excludes>
-										<exclude>*:*:*:*:test</exclude>
-										<exclude>*:*:*:*:system</exclude>
-									</excludes>
-								</banTransitiveDependencies>
-								<!-- <dependencyConvergence /> --> <!-- can't configure dependencyConvergence to ignore test dependencies ... -->
-								<requireMavenVersion>
-									<version>${version.min.maven}</version>
-								</requireMavenVersion>
-							</rules>
-							<fail>true</fail>
-						</configuration>
-						<executions>
-							<execution>
-								<id>enforce-strict</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.revapi</groupId>
-						<artifactId>revapi-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>strict-semver</id>
-								<goals>
-									<goal>check</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>jdk-oracle</id>
-			
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>${maven.compiler.target}</version>
-									<vendor>oracle</vendor>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>				
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>jdk-azul</id>
-			
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>${maven.compiler.target}</version>
-									<vendor>azul</vendor>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>				
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>jdk-openjdk</id>
-			
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>${maven.compiler.target}</version>
-									<vendor>openjdk</vendor>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>				
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>jdk-ibm</id>
-			
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>${maven.compiler.target}</version>
-									<vendor>ibm</vendor>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>				
-				</plugins>
-			</build>
-		</profile>
-
-
-		<profile>
-			<!-- 
-				Because of https://maven.apache.org/guides/mini/guide-configuring-plugins.html#Using_the_reporting_Tag_VS_build_Tag
-				We must add revapi plugin to build section such that revapi report can't pick up it's API analyser dependency via pluginManagement
-				
-				Also issue with PiTest report failing as can't find report in pom packaged module
-				
-				JavaDoc used in release and site, want to share the UML doclet
-			-->
-			<id>report</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<properties>
-				<earcam.profile.report>true</earcam.profile.report>
-			</properties>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.revapi</groupId>
-						<artifactId>revapi-maven-plugin</artifactId>
-					</plugin>
-
-					<plugin>
-						<groupId>org.pitest</groupId>
-						<artifactId>pitest-maven</artifactId>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>site</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<properties>
-				<earcam.profile.site>true</earcam.profile.site>
-			</properties>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>enforce-active-profiles</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-								<configuration>
-									<rules>
-										<requireProperty>
-											<property>earcam.profile.analyse</property>
-											<regex>^true$</regex>
-											<message>Profile "analyse" must be active</message>
-										</requireProperty>
-
-										<requireProperty>
-											<property>earcam.profile.report</property>
-											<regex>^true$</regex>
-											<message>Profile "report" must be active</message>
-										</requireProperty>
-									</rules>
-									<fail>true</fail>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>com.github.s4u.plugins</groupId>
-						<artifactId>sitemapxml-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>gen</goal>
-								</goals>
-								<phase>site</phase>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-site-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>stage</id>
-								<goals>
-									<goal>site</goal>
-									<goal>stage</goal>
-								</goals>
-								<phase>site</phase>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-
-		<profile>
-			<id>publish-site</id>
-			<!-- requires GitHub credentials, this should be in settings.xml in server section -->
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>enforce-active-profiles</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-								<configuration>
-									<rules>
-										<requireProperty>
-											<property>earcam.profile.site</property>
-											<regex>^true$</regex>
-											<message>Profile "site" must be active</message>
-										</requireProperty>
-									</rules>
-									<fail>true</fail>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				
-					<plugin>
-						<groupId>com.github.github</groupId>
-						<artifactId>site-maven-plugin</artifactId>
-						<configuration>
-							<message>Creating site for ${project.artifactId}, ${project.version}</message>
-							<server>github</server>
-						</configuration>
-						<executions>
-							<execution>
-								<id>github-site</id>
-								<goals>
-									<goal>site</goal>
-								</goals>
-								<phase>site-deploy</phase>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	
-		<profile>
-			<id>analyse</id>
-			<!-- required for sonarqube -->
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			
-			<properties>
-				<sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
-				<sonar.pitest.mode>reuseReport</sonar.pitest.mode>
-				
-				<earcam.profile.analyse>true</earcam.profile.analyse>
-			</properties>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.jacoco</groupId>
-						<artifactId>jacoco-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>prepare-agent</goal>
-								</goals>
-								<configuration>
-									<propertyName>surefire.argLine</propertyName>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<argLine>${surefire.argLine} -XX:MaxPermSize=512m</argLine>
-						</configuration>
-					</plugin>					
-
-					<plugin>
-						<groupId>org.pitest</groupId>
-						<artifactId>pitest-maven</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>mutationCoverage</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>			
-		</profile>	
-
-
-		<profile>
-			<id>distribute</id>
-			<!-- requires GPG keypass, this should be in settings.xml in a profile called "signature" -->
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<properties>
-				<sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
-				<sonar.pitest.mode>reuseReport</sonar.pitest.mode>
-
-				<earcam.profile.distribute>true</earcam.profile.distribute>
-			</properties>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>enforce-active-profiles</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-								<configuration>
-									<rules>
-										<requireProperty>
-											<property>earcam.profile.signature</property>
-											<regex>^true$</regex>
-											<message>Profile "signature" must be active</message>
-										</requireProperty>
-									</rules>
-									<fail>true</fail>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar</goal>
-									<goal>test-jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>jar</goal>
-									<goal>test-jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>	
-	
-
-		<profile>
-			<id>release-scm</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<inherited>true</inherited>
-						<executions>
-							<execution>
-								<id>enforce-no-snapshots</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-								<configuration>
-									<rules>
-										<requireReleaseDeps>
-											<message>Snapshots dependencies NOT permitted for release</message>
-										</requireReleaseDeps>
-										<requireReleaseVersion>
-											<message>Snapshot version for project NOT permitted for release</message>
-										</requireReleaseVersion>
-									</rules>
-									<fail>true</fail>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-release-plugin</artifactId>
-						<configuration>
-							<username>earcam</username>
-							<tagNameFormat>v@{project.version}</tagNameFormat>
-							<resume>false</resume>
-							<pushChanges>false</pushChanges>
-							<autoVersionSubmodules>true</autoVersionSubmodules>
-							<autoVersionSubmodules>true</autoVersionSubmodules>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>	
-
-
-		<profile>
-			<id>publish</id>
-			<!-- requires Sonatype credentials, this should be in settings.xml in server section -->
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>enforce-active-profiles</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-								<configuration>
-									<rules>
-										<requireProperty>
-											<property>earcam.profile.distribute</property>
-											<regex>^true$</regex>
-											<message>Profile "distribute" must be active</message>
-										</requireProperty>
-									</rules>
-									<fail>true</fail>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<extensions>true</extensions>
-						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>false</autoReleaseAfterClose>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>	
-	</profiles>
 </project>

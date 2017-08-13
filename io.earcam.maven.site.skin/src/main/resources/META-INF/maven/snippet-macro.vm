@@ -1,0 +1,62 @@
+#*
+
+SNIPPET MACRO
+
+*##macro ( snippet $snippetFile $snippetName )#*
+
+	*##set( $file = "${project.basedir}" + $snippetFile )#*
+	*##set( $found = "$snippetName" == "" )#*
+	*##set( $prefix = "EARCAM_SNIPPET_" )#*
+	*##set( $first = "FIRST_LINE_MARKER" )#*
+
+	*##set( $tab = "	" )#*
+	*##set( $spaces = "    " )#*
+	*##set( $blankLine = $escape.getNewline() + $escape.getNewline() )#*
+	*##set( $fakeBlankLine = $escape.getNewline() + $tab + $escape.getNewline() )#*
+	*##set($snippetMarker = false)#*
+	
+	*##if( $found )#*
+		*##set( $startSnippet = $escape.getNewline() )#*
+		*##set( $endSnippet = $escape.getNewline() )#*
+		*##set( $mdIndent = $spaces )#*
+	*##else#*
+		*##set( $startSnippet = $prefix + "BEGIN: " + $snippetName )#*
+		*##set( $endSnippet = $prefix + "END: " + $snippetName )#*
+		*##set( $mdIndent = $first )#*
+	*##end#*
+
+	*##foreach( $line in $StringUtils.split( $StringUtils.replace( $FileUtils.fileRead( $file ), $blankLine, $fakeBlankLine ), $escape.getNewline() ))#*
+		*##set( $cleanLine = $StringUtils.removeDuplicateWhitespace( $line ) )#*
+		
+		*##if( $found && $mdIndent == $first )#*
+			*##if( $StringUtils.substring($line, 0, 1) == $tab || $StringUtils.substring($line, 0, 4) == $spaces)#*
+			
+				// We should capture the existing indent and turn this into a replace first substring  
+				
+				// count the $tab s or $space s - ????
+			
+				*##set( $mdIndent = "" )#*
+			*##else#*
+				*##set( $mdIndent = $tab )#*
+			*##end#*
+		*##end#*
+			
+		*##if( $StringUtils.contains( $cleanLine, $prefix ) && !$StringUtils.contains( $cleanLine, $startSnippet ) && !$StringUtils.contains( $cleanLine, $endSnippet ) )#*
+			*##set($snippetMarker = true)#*
+		*##end#*
+		
+		*##if( $StringUtils.contains( $cleanLine, $endSnippet ) )#*
+			*##set($found = false)#*
+		*##end#*
+	
+		*##if( $found && !$snippetMarker )#*
+		*#$mdIndent$line$escape.getNewline()#*
+		*##end#*
+	
+		*##if( $StringUtils.contains( $cleanLine, $startSnippet ) )#*
+			*##set($found = true)#*
+		*##end#*
+		*##set($snippetMarker = false)#*
+	*##end#*
+
+*##end
