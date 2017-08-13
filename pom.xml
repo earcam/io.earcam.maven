@@ -56,9 +56,9 @@
 	</modules>
 
 	<scm>
-		<connection>scm:git:git://bitbucket.org/earcam/io.earcam.maven.git</connection>
-		<developerConnection>scm:git:ssh://bitbucket.org:earcam/io.earcam.maven.git</developerConnection>
-		<url>http://bitbucket.org/earcam/io.earcam.maven/tree/master</url>
+		<connection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</connection>
+		<developerConnection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</developerConnection>
+		<url>http://bitbucket.org/earcam/io.earcam.maven.git</url>
 	</scm>
 	<ciManagement>
 		<system>Jenkins</system>
