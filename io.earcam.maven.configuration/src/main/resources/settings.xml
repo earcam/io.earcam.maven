@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<localRepository>${HOME}/.m2/repository/</localRepository>
+
+	<profiles>
+		<profile>
+			<id>ci</id>
+
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<repositories>
+				<repository>
+					<id>central</id>
+					<layout>default</layout>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<url>https://repo.maven.apache.org/maven2/</url>
+				</repository>
+
+				<repository>
+					<id>sonatype-oss</id>
+					<layout>default</layout>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+				</repository>
+			</repositories>		
+		</profile>
+	</profiles>
+</settings>
