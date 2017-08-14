@@ -392,6 +392,13 @@
 						<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 						<licenseName>earcam_beam</licenseName>
 						<licenseResolver>classpath://META-INF/license</licenseResolver>
+						<includes>
+							<include>**/*.java</include>
+							<include>**/*.js</include>
+							<include>**/*.groovy</include>
+							<include>**/*.sh</include>
+							<include>**/*.xml</include>
+						</includes>
 					</configuration>
 					<dependencies>
 						<dependency>
