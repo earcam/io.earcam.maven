@@ -360,7 +360,8 @@
 					<artifactId>formatter-maven-plugin</artifactId>
 					<version>2.0.1</version>
 					<configuration>
-						<configFile>eclipse/formatter.xml</configFile>
+						<configFile>META-INF/eclipse/java-formatter.xml</configFile>
+						<configJsFile>META-INF/eclipse/javascript-formatter.xml</configJsFile>
 					</configuration>
 					<dependencies>
 						<dependency>
@@ -382,7 +383,25 @@
 					<artifactId>maven-invoker-plugin</artifactId>
 					<version>3.0.1</version>
 				</plugin>
-			</plugins>		
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>1.13</version>
+					<configuration>
+						<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+						<licenseName>earcam_beam</licenseName>
+						<licenseResolver>classpath://META-INF/license</licenseResolver>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>io.earcam.maven</groupId>
+							<artifactId>io.earcam.maven.configuration</artifactId>
+							<version>${earcam.maven.project.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
 		</pluginManagement>
 	</build>
 
@@ -525,20 +544,6 @@
 										</copy>
 									</target>
 								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>net.revelc.code.formatter</groupId>
-						<artifactId>formatter-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>tidy-format</id>
-								<goals>
-									<goal>format</goal>
-								</goals>
-								<phase>process-sources</phase>
 							</execution>
 						</executions>
 					</plugin>
