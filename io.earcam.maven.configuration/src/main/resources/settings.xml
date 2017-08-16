@@ -29,7 +29,27 @@
 					</snapshots>
 					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 				</repository>
-			</repositories>		
+			</repositories>
+			
+			<pluginRepositories>
+				<pluginRepository>
+					<id>central-plugins</id>
+					<layout>default</layout>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<url>https://repo.maven.apache.org/maven2/</url>
+				</pluginRepository>
+				
+				<pluginRepository>
+					<id>sonatype-oss-plugins</id>
+					<layout>default</layout>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+				</pluginRepository>
+			</pluginRepositories>		
 		</profile>
 	</profiles>
 </settings>
