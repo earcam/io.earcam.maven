@@ -59,8 +59,8 @@
 		<connection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</connection>
 		<developerConnection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</developerConnection>
 		<url>http://bitbucket.org/earcam/io.earcam.maven.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<ciManagement>
 		<system>Jenkins</system>
 		<url>https://travis-ci.org/earcam/io.earcam.maven</url>
@@ -298,7 +298,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.4</version>
+					<version>3.0.0-M1</version>
 					<configuration>
 						<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
 						<docletArtifact>
@@ -399,6 +399,10 @@
 							<include>**/*.sh</include>
 							<include>**/*.xml</include>
 						</includes>
+						<roots>
+							<!-- don't bother with generated/processed sources -->
+							<root>src</root> 
+						</roots>
 					</configuration>
 					<dependencies>
 						<dependency>
