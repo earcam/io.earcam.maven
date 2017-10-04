@@ -1472,7 +1472,7 @@
 
 
 #*	*##if ( $decoration.body.head )##
-		#htmlContent ( $decoration.body.head.getChildren() )
+		$decoration.body.head
 #*	*##end#*
 
 	*##if( $headContent )#*
@@ -1515,6 +1515,28 @@
 
 *###
 					<div class="nav-collapse collapse" id="top-nav-collapse">
+#*					
+	*##if( $config.is( "searchBox" ) )#*				
+*#
+						<form id="search-form" class="navbar-form pull-right">
+							<div class="input-append">
+								<input id="search-field" class="input" placeholder="Search..." type="text" autocomplete="off" />
+								<div class="btn-group" style="margin-top: 0px !important">
+									<button class="btn" type="submit" alt="Search" title="Search">
+										<span class="icon-search"></span>
+									</button>
+									<button class="btn dropdown-toggle" data-toggle="dropdown">
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li><a href="$escape.getHash()" onclick="$('$escape.getHash()search-form').submit(); return false;">Built-in</a>
+										<li><a href="$escape.getHash()" onclick="window.location.href='https://google.com/search?q=site:$project.url+' + $('$escape.getHash()search-field').val(); return false;">Google</a></li>
+									</ul>
+								</div>							
+							</div>							
+						</form>
+#*
+	*##end##
 						<ul class="nav pull-right">
 #*
 
@@ -1753,9 +1775,24 @@
 		</div>
 	</div>
 
-	<!-- Le javascript
-	================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
+
+#*	*##if( $config.is( "searchBox" ) )#*
+*#
+	<div id="search-results-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="search-results-title" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 id="search-results-title">Search Results</h4>
+		</div>
+		<div class="modal-body">
+			<div id="search-results-body" class="container-fluid"></div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+#*	*##end##
+
+
 #*
 	*##if ( $localResources )##
 	<script src="$resourcePath/js/jquery.min.js"></script>
@@ -1781,11 +1818,33 @@
 #*	*##end#*
 
 	*##if ( $config.endContent )#*
-		// custom HTML (e.g. JavaScript) to place at the end of the document before </body>	*###
 	#htmlContent ( $config.endContent.getChildren() )
 #*	*##end##
 
 	<script src="$resourcePath/js/earcam-skin.js"></script>
+
+#*
+	*##if( $config.is( "searchBox" ) )#*
+*#
+	<script src="$protocol//cdnjs.cloudflare.com/ajax/libs/lunr.js/2.1.0/lunr.min.js" integrity="sha256-PsczTPC/CV+I83Z2bnXm3sj4bxju+mQ/Vj7Yf0/FW2A=" crossorigin="anonymous"></script>
+	<script src="$protocol//cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.1.1/typeahead.jquery.min.js" integrity="sha256-qZIhMVBV4/crmcmYXNq5ZE5gPRiiPPMKVYbapf5HDBs=" crossorigin="anonymous"></script>
+
+	<script src="$resourcePath/js/ui.search.lunr.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function(e) {
+			var el = document.getElementById('search-field');
+			
+			if(window.location.hash && window.location.hash.startsWith('#search=')) { 
+				el.addEventListener('searchIndexLoaded', function(e){ 
+					$('#search-field').val(window.location.hash.substring(8)); 
+					$('#search-form').submit();
+					return false;
+				});
+			}			
+			loadSearch(el);
+		});
+	</script>
+#*	*##end##
 
 	</body>
 </html>

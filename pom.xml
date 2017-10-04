@@ -18,7 +18,8 @@
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
-			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+			<!-- <url>https://www.apache.org/licenses/LICENSE-2.0</url> -->
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 		</license>
 		<license>
@@ -33,7 +34,7 @@
 		</license>
 		<license>
 			<name>MIT License</name>
-			<url>https://www.opensource.org/licenses/MIT</url>
+			<url>https://opensource.org/licenses/MIT</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -88,12 +89,15 @@
 		<maven.compiler.source>${version.java}</maven.compiler.source>
 		<maven.compiler.target>${version.java}</maven.compiler.target>
 
+		<!-- enable to set available plugins' custom verbosity, capture intermediate generated files, etc -->
+		<earcam.build.debug>false</earcam.build.debug>
+
+
 		<coordinate.username.project>earcam/${project.artifactId}</coordinate.username.project>
 
 		<sonar.java.source>${version.java.platform}</sonar.java.source>
 
-		<!-- <version.pitest>1.2.0</version.pitest> --> <!-- analysis failing -->
-		<version.pitest>1.2.0</version.pitest>
+		<version.pitest>1.2.3</version.pitest>
 		<version.jacoco>0.7.9</version.jacoco>
 		
 		<version.maven.plugin.site>3.6</version.maven.plugin.site>
@@ -170,6 +174,20 @@
 										<ignore />
 									</action>
 								</pluginExecution>
+								
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>tidy-maven-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>check</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -214,6 +232,10 @@
 						<validate>true</validate>
 						<inputEncoding>${project.reporting.outputEncoding}</inputEncoding>
 						<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
+						<saveProcessedContent>${earcam.build.debug}</saveProcessedContent>
+						<topSiteURL>${site.url}</topSiteURL>
+						
+						<generateSitemap>false</generateSitemap><!-- fails to produce valid target/generated-site/xdoc/sitemap.xml -->
 					</configuration>
 					<dependencies>
 						<dependency>
@@ -227,7 +249,7 @@
 				<plugin>
 					<groupId>org.revapi</groupId>
 					<artifactId>revapi-maven-plugin</artifactId>
-					<version>0.9.1</version>
+					<version>0.9.2</version>
 					<configuration>
 						<failOnUnresolvedArtifacts>false</failOnUnresolvedArtifacts>
 						<failOnUnresolvedDependencies>false</failOnUnresolvedDependencies>
@@ -249,8 +271,7 @@
 						<dependency>
 							<groupId>org.revapi</groupId>
 							<artifactId>revapi-java</artifactId>
-							<version>0.14.0</version>
-							<scope>runtime</scope>
+							<version>0.14.1</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -259,6 +280,11 @@
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>${version.jacoco}</version>
+					<configuration>
+						<excludes>
+							<exclude>**/HelpMojo.*</exclude>
+						</excludes>
+					</configuration>
 				</plugin>
 				
 				<plugin>
@@ -266,6 +292,7 @@
 					<artifactId>pitest-maven</artifactId>
 					<version>${version.pitest}</version>
 					<configuration>
+						<verbose>${earcam.build.debug}</verbose>
 						<skip>${skip.execution.pitest}</skip>
 						<inScopeClasses>
 							<param>io.earcam.*</param>
@@ -312,12 +339,13 @@
 						 -->
 						<additionalparam>-views -all -inferdep -inferrel</additionalparam>
 						<useStandardDocletOptions>true</useStandardDocletOptions>
+						<detectLinks>true</detectLinks>
 						<links>
 							<link>http://docs.oracle.com/javase/${version.java.platform}/docs/api</link>
 						</links>
 						<failOnError>false</failOnError>
-						<verbose>true</verbose>
-						<debug>true</debug>
+						<verbose>${earcam.build.debug}</verbose>
+						<debug>${earcam.build.debug}</debug>
 					</configuration>
 				</plugin>
 
@@ -412,6 +440,40 @@
 						</dependency>
 					</dependencies>
 				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.20.1</version>
+					<configuration>
+						<includes>
+							<include>**/*Test.java</include>
+						</includes>
+						<excludes>
+							<exclude>**/*IntegrationTest.java</exclude>
+						</excludes>
+					</configuration>
+				</plugin>					
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.20.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<testFailureIgnore>false</testFailureIgnore>
+								<includes>
+									<include>**/*IntegrationTest.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -428,6 +490,16 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-toolchains-plugin</artifactId>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
 					</plugin>
 
 					<plugin>
@@ -477,6 +549,7 @@
 						<executions>
 							<execution>
 								<id>strict-pom</id>
+								<phase>validate</phase>
 								<goals>
 									<goal>check</goal>
 								</goals>
@@ -499,6 +572,46 @@
 							</execution>
 						</executions>
 					</plugin>
+
+					<plugin>
+						<groupId>de.thetaphi</groupId>
+						<artifactId>forbiddenapis</artifactId>
+						<version>2.4.1</version>
+						<executions>
+							<execution>
+								<id>check</id>
+								<goals>
+									<goal>check</goal>
+								</goals>
+								<configuration>
+									<failOnUnsupportedJava>false</failOnUnsupportedJava>
+									<bundledSignatures>
+										<bundledSignature>jdk-unsafe</bundledSignature>
+										<bundledSignature>jdk-deprecated</bundledSignature>
+										<bundledSignature>jdk-non-portable</bundledSignature>
+										<bundledSignature>jdk-system-out</bundledSignature>
+										<bundledSignature>jdk-reflection</bundledSignature>
+									</bundledSignatures>
+								</configuration>
+							</execution>
+							<execution>
+								<id>test-check</id>
+								<goals>
+									<goal>testCheck</goal>
+								</goals>
+								<configuration>
+									<failOnUnsupportedJava>false</failOnUnsupportedJava>
+									<bundledSignatures>
+										<bundledSignature>jdk-unsafe</bundledSignature>
+										<bundledSignature>jdk-deprecated</bundledSignature>
+										<bundledSignature>jdk-non-portable</bundledSignature>
+										<bundledSignature>jdk-system-out</bundledSignature>
+										<!-- <bundledSignature>jdk-reflection</bundledSignature> -->
+									</bundledSignatures>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -510,50 +623,22 @@
 			</activation>
 
 			<build>
-				<defaultGoal>clean install</defaultGoal>
+				<defaultGoal>clean install tidy:pom</defaultGoal>
 
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-invoker-plugin</artifactId>
+						<artifactId>maven-scm-plugin</artifactId>
+						<version>1.9.5</version>
 						<executions>
 							<execution>
-								<id>tidy-pom</id>
+								<id>tidy-fail-scm-uncommitted</id>
 								<goals>
-									<goal>run</goal>
+									<goal>check-local-modification</goal>
 								</goals>
 								<phase>validate</phase>
 								<configuration>
-									<goals>
-										<goal>tidy:pom</goal>
-									</goals>
-									<debug>false</debug>
-									<suppressSummaries>true</suppressSummaries>
-									<noLog>true</noLog>
-									<pom>${project.basedir}/pom.xml</pom>
-									<cloneProjectsTo>${project.build.directory}/tidy</cloneProjectsTo>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.8</version>
-						<executions>
-							<execution>
-								<id>copy-tidy-pom</id>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<phase>initialize</phase>
-								<configuration>
-									<target>
-										<copy todir="${project.basedir}">
-											<fileset dir="${project.build.directory}/tidy/" includes="pom.xml" />
-										</copy>
-									</target>
+									<errorMessage>Commit and push changes before running auto tidy</errorMessage>
 								</configuration>
 							</execution>
 						</executions>
@@ -745,21 +830,20 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-site-plugin</artifactId>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-doap-plugin</artifactId>
+						<!-- ISSUE: doesn't correctly report multiple licenses -->
+						<version>1.2</version>
 						<executions>
 							<execution>
 								<id>site</id>
-								<goals>
-									<goal>site</goal>
-								</goals>
 								<phase>site</phase>
-							</execution>
-
-							<execution>
-								<id>site-stage</id>
 								<goals>
-									<goal>stage</goal>
+									<goal>generate</goal>
 								</goals>
-								<phase>post-site</phase>
 							</execution>
 						</executions>
 					</plugin>
@@ -777,6 +861,14 @@
 				<defaultGoal>site:deploy</defaultGoal>
 				
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-site-plugin</artifactId>
+						<configuration>
+							<skipDeploy>true</skipDeploy><!-- this skips the site-deploy lifecycle phase, rather than just the plugin's execution -->
+						</configuration>
+					</plugin>
+					
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-enforcer-plugin</artifactId>
@@ -863,11 +955,23 @@
 						<artifactId>jacoco-maven-plugin</artifactId>
 						<executions>
 							<execution>
+								<id>prepare-agent-unit</id>
 								<goals>
 									<goal>prepare-agent</goal>
 								</goals>
 								<configuration>
 									<propertyName>surefire.argLine</propertyName>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>prepare-agent-integration</id>
+								<goals>
+									<goal>prepare-agent-integration</goal>
+								</goals>
+								<phase>pre-integration-test</phase>
+								<configuration>
+									<propertyName>failsafe.argLine</propertyName>
 								</configuration>
 							</execution>
 						</executions>
@@ -880,6 +984,14 @@
 							<argLine>${surefire.argLine} -XX:MaxPermSize=512m</argLine>
 						</configuration>
 					</plugin>					
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<argLine>${failsafe.argLine} -XX:MaxPermSize=512m</argLine>
+						</configuration>
+					</plugin>
 
 					<plugin>
 						<groupId>org.pitest</groupId>
@@ -1019,7 +1131,7 @@
 							<tagNameFormat>v@{project.version}</tagNameFormat>
 							<resume>false</resume>
 							<pushChanges>false</pushChanges>
-							<autoVersionSubmodules>true</autoVersionSubmodules>
+							<autoVersionSubmodules>true</autoVersionSubmodules> <!-- TODO revapi -->
 							<autoVersionSubmodules>true</autoVersionSubmodules>
 						</configuration>
 					</plugin>
