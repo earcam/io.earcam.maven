@@ -97,10 +97,10 @@
 
 		<sonar.java.source>${version.java.platform}</sonar.java.source>
 
-		<version.pitest>1.2.3</version.pitest>
-		<version.jacoco>0.7.9</version.jacoco>
+		<version.pitest>1.3.2</version.pitest>
+		<version.jacoco>0.8.0</version.jacoco>
 		
-		<version.maven.plugin.site>3.6</version.maven.plugin.site>
+		<version.maven.plugin.site>3.7</version.maven.plugin.site>
 		
 		<version.min.maven>3.3.9</version.min.maven>
 
@@ -108,7 +108,6 @@
 		
 		<site.url>http://localhost:8080/</site.url>
 		<earcam.project.name.short />
-		
 	</properties>
 
 	<build>
@@ -196,7 +195,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.6</version>
+					<version>3.0.0</version>
 				</plugin>
 			
 				<plugin>
@@ -208,7 +207,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.7</version>
+					<version>3.0.2</version>
 				</plugin>
 
 				<plugin>
@@ -249,7 +248,7 @@
 				<plugin>
 					<groupId>org.revapi</groupId>
 					<artifactId>revapi-maven-plugin</artifactId>
-					<version>0.9.2</version>
+					<version>0.10.0</version>
 					<configuration>
 						<failOnUnresolvedArtifacts>false</failOnUnresolvedArtifacts>
 						<failOnUnresolvedDependencies>false</failOnUnresolvedDependencies>
@@ -271,7 +270,7 @@
 						<dependency>
 							<groupId>org.revapi</groupId>
 							<artifactId>revapi-java</artifactId>
-							<version>0.14.1</version>
+							<version>0.15.1</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -325,7 +324,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.0-M1</version>
+					<version>3.0.0</version>
 					<configuration>
 						<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
 						<docletArtifact>
@@ -340,9 +339,8 @@
 						<additionalparam>-views -all -inferdep -inferrel</additionalparam>
 						<useStandardDocletOptions>true</useStandardDocletOptions>
 						<detectLinks>true</detectLinks>
-						<links>
-							<link>http://docs.oracle.com/javase/${version.java.platform}/docs/api</link>
-						</links>
+						<detectJavaApiLink>true</detectJavaApiLink>
+						<detectOfflineLinks>true</detectOfflineLinks>
 						<failOnError>false</failOnError>
 						<verbose>${earcam.build.debug}</verbose>
 						<debug>${earcam.build.debug}</debug>
@@ -386,7 +384,7 @@
 				<plugin>
 					<groupId>net.revelc.code.formatter</groupId>
 					<artifactId>formatter-maven-plugin</artifactId>
-					<version>2.0.1</version>
+					<version>2.7.1</version>
 					<configuration>
 						<configFile>META-INF/eclipse/java-formatter.xml</configFile>
 						<configJsFile>META-INF/eclipse/javascript-formatter.xml</configJsFile>
@@ -403,7 +401,7 @@
 				<plugin>
 					<groupId>org.owasp</groupId>
 					<artifactId>dependency-check-maven</artifactId>
-					<version>2.1.0</version>
+					<version>3.1.1</version>
 				</plugin>
 
 				<plugin>
@@ -415,7 +413,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>license-maven-plugin</artifactId>
-					<version>1.13</version>
+					<version>1.14</version>
 					<configuration>
 						<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 						<licenseName>earcam_beam</licenseName>
