@@ -100,7 +100,7 @@
 		<version.pitest>1.3.2</version.pitest>
 		<version.jacoco>0.8.0</version.jacoco>
 		
-		<version.maven.plugin.site>3.7</version.maven.plugin.site>
+		<version.maven.plugin.site>3.6</version.maven.plugin.site>
 		
 		<version.min.maven>3.3.9</version.min.maven>
 
