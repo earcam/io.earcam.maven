@@ -42,7 +42,7 @@
 		<type>jdk</type>
 		<provides>
 			<id>JavaSE-1.9</id>
-			<version>1.9</version>
+			<version>9</version>
 			<vendor>oracle</vendor>
 		</provides>
 		<configuration>

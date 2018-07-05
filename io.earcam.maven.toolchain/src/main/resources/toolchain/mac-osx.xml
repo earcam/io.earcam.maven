@@ -5,8 +5,20 @@
 	<toolchain>
 		<type>jdk</type>
 		<provides>
-			<id>JavaSE-1.9</id>
-			<version>1.9</version>
+			<id>JavaSE-10</id>
+			<version>10</version>
+			<vendor>oracle</vendor>
+		</provides>
+		<configuration>
+			<jdkHome>/Library/Java/JavaVirtualMachines/jdk-10.jdk/Contents/Home/</jdkHome>
+		</configuration>
+	</toolchain>
+
+	<toolchain>
+		<type>jdk</type>
+		<provides>
+			<id>Java-9</id>
+			<version>9</version>
 			<vendor>oracle</vendor>
 		</provides>
 		<configuration>
@@ -22,7 +34,7 @@
 			<vendor>oracle</vendor>
 		</provides>
 		<configuration>
-			<jdkHome>/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/</jdkHome>
+			<jdkHome>/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home/</jdkHome>
 		</configuration>
 	</toolchain>
 

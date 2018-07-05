@@ -97,10 +97,11 @@
 
 		<sonar.java.source>${version.java.platform}</sonar.java.source>
 
-		<version.pitest>1.3.2</version.pitest>
-		<version.jacoco>0.8.0</version.jacoco>
+		<version.pitest>1.4.0</version.pitest>
+		<version.jacoco>0.8.1</version.jacoco>
+		<version.forbiddenapis>2.5</version.forbiddenapis>
 		
-		<version.maven.plugin.site>3.6</version.maven.plugin.site>
+		<version.maven.plugin.site>3.7.1</version.maven.plugin.site>
 		
 		<version.min.maven>3.3.9</version.min.maven>
 
@@ -195,7 +196,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 				</plugin>
 			
 				<plugin>
@@ -207,20 +208,13 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.1.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-toolchains-plugin</artifactId>
 					<version>1.1</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>toolchain</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 
 				<plugin>
@@ -228,12 +222,12 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${version.maven.plugin.site}</version>
 					<configuration>
-						<validate>true</validate>
+						<skipDeploy>true</skipDeploy>
+						<validate>false</validate><!-- false positives about "HTML escaped entities" which are in fact img src URL parameters -->
 						<inputEncoding>${project.reporting.outputEncoding}</inputEncoding>
 						<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
 						<saveProcessedContent>${earcam.build.debug}</saveProcessedContent>
 						<topSiteURL>${site.url}</topSiteURL>
-						
 						<generateSitemap>false</generateSitemap><!-- fails to produce valid target/generated-site/xdoc/sitemap.xml -->
 					</configuration>
 					<dependencies>
@@ -248,7 +242,7 @@
 				<plugin>
 					<groupId>org.revapi</groupId>
 					<artifactId>revapi-maven-plugin</artifactId>
-					<version>0.10.0</version>
+					<version>0.10.4</version>
 					<configuration>
 						<failOnUnresolvedArtifacts>false</failOnUnresolvedArtifacts>
 						<failOnUnresolvedDependencies>false</failOnUnresolvedDependencies>
@@ -264,13 +258,22 @@
 									<item>java.class.nonPublicPartOfAPI</item>
 								</passThroughDifferences>
 							</revapi.semver.ignore>
+							
+							<revapi.ignore>
+								<item>
+									<regex>true</regex>
+									<code>java.class.externalClassExposedInAPI</code>
+									<package>${project.groupId}.*</package>
+									<justification>Exposing packages from other modules in same project is OK</justification>
+								</item>
+							</revapi.ignore>		
 						</analysisConfiguration>
 					</configuration>
 					<dependencies>
 						<dependency>
 							<groupId>org.revapi</groupId>
 							<artifactId>revapi-java</artifactId>
-							<version>0.15.1</version>
+							<version>0.18.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -307,6 +310,13 @@
 							<outputFormat>HTML</outputFormat>
 						</outputFormats>
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.pitest</groupId>
+							<artifactId>pitest-junit5-plugin</artifactId>
+							<version>0.5</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				
 				<plugin>
@@ -324,7 +334,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.0.1</version>
 					<configuration>
 						<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
 						<docletArtifact>
@@ -359,7 +369,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.4.1</version>
+					<version>3.0.0-M2</version>
 				</plugin>
 
 				<plugin>
@@ -377,14 +387,14 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>tidy-maven-plugin</artifactId>
-					<version>1.0.0</version>
+					<version>1.1.0</version>
 					<!-- thankfully this plugin doesn't mandate the idiotic preference for spaces over tabs -->
 				</plugin>
 
 				<plugin>
 					<groupId>net.revelc.code.formatter</groupId>
 					<artifactId>formatter-maven-plugin</artifactId>
-					<version>2.7.1</version>
+					<version>2.7.3</version>
 					<configuration>
 						<configFile>META-INF/eclipse/java-formatter.xml</configFile>
 						<configJsFile>META-INF/eclipse/javascript-formatter.xml</configJsFile>
@@ -399,21 +409,15 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.owasp</groupId>
-					<artifactId>dependency-check-maven</artifactId>
-					<version>3.1.1</version>
-				</plugin>
-
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-invoker-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.1.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>license-maven-plugin</artifactId>
-					<version>1.14</version>
+					<version>1.16</version>
 					<configuration>
 						<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 						<licenseName>earcam_beam</licenseName>
@@ -424,6 +428,8 @@
 							<include>**/*.groovy</include>
 							<include>**/*.sh</include>
 							<include>**/*.xml</include>
+							<include>**/*.c</include>
+							<include>**/*.cpp</include>
 						</includes>
 						<roots>
 							<!-- don't bother with generated/processed sources -->
@@ -442,7 +448,8 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.20.1</version>
+					<version>2.22.0</version>
+					<inherited>true</inherited>
 					<configuration>
 						<includes>
 							<include>**/*Test.java</include>
@@ -456,7 +463,8 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.20.1</version>
+					<version>2.22.0</version>
+					<inherited>true</inherited>
 					<executions>
 						<execution>
 							<goals>
@@ -485,11 +493,6 @@
 
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-					</plugin>
-
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
@@ -556,25 +559,9 @@
 					</plugin>
 
 					<plugin>
-						<groupId>org.owasp</groupId>
-						<artifactId>dependency-check-maven</artifactId>
-						<configuration>
-							<failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
-						</configuration>
-						<executions>
-							<execution>
-								<id>strict-owasp</id>
-								<goals>
-									<goal>check</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
 						<groupId>de.thetaphi</groupId>
 						<artifactId>forbiddenapis</artifactId>
-						<version>2.4.1</version>
+						<version>${version.forbiddenapis}</version>
 						<executions>
 							<execution>
 								<id>check</id>
@@ -603,8 +590,10 @@
 										<bundledSignature>jdk-unsafe</bundledSignature>
 										<bundledSignature>jdk-deprecated</bundledSignature>
 										<bundledSignature>jdk-non-portable</bundledSignature>
+										<!-- 
 										<bundledSignature>jdk-system-out</bundledSignature>
-										<!-- <bundledSignature>jdk-reflection</bundledSignature> -->
+										<bundledSignature>jdk-reflection</bundledSignature>
+										-->
 									</bundledSignatures>
 								</configuration>
 							</execution>
@@ -627,7 +616,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-scm-plugin</artifactId>
-						<version>1.9.5</version>
+						<version>1.10.0</version>
 						<executions>
 							<execution>
 								<id>tidy-fail-scm-uncommitted</id>
@@ -651,7 +640,7 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -660,12 +649,12 @@
 						<configuration>
 							<toolchains>
 								<jdk>
-									<version>${maven.compiler.target}</version>
+									<version>${version.java}</version>
 									<vendor>oracle</vendor>
 								</jdk>
 							</toolchains>
 						</configuration>
-					</plugin>				
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -685,12 +674,12 @@
 						<configuration>
 							<toolchains>
 								<jdk>
-									<version>${maven.compiler.target}</version>
+									<version>${version.java}</version>
 									<vendor>azul</vendor>
 								</jdk>
 							</toolchains>
 						</configuration>
-					</plugin>				
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -710,18 +699,19 @@
 						<configuration>
 							<toolchains>
 								<jdk>
-									<version>${maven.compiler.target}</version>
+									<version>${version.java}</version>
 									<vendor>openjdk</vendor>
 								</jdk>
 							</toolchains>
 						</configuration>
-					</plugin>				
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
 
+
 		<profile>
-			<id>jdk-ibm</id>
+			<id>jdk-openj9</id>
 			
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -735,8 +725,8 @@
 						<configuration>
 							<toolchains>
 								<jdk>
-									<version>${maven.compiler.target}</version>
-									<vendor>ibm</vendor>
+									<version>${version.java}</version>
+									<vendor>eclipse</vendor>
 								</jdk>
 							</toolchains>
 						</configuration>
@@ -748,7 +738,7 @@
 		<profile>
 			<!-- 
 				Because of https://maven.apache.org/guides/mini/guide-configuring-plugins.html#Using_the_reporting_Tag_VS_build_Tag
-				We must add revapi plugin to build section such that revapi report can't pick up it's API analyser dependency via pluginManagement
+				We must add revapi plugin to build section such that revapi report can pick up it's API analyser dependency via pluginManagement
 				
 				Also issue with PiTest report failing as can't find report in pom packaged module
 				
@@ -763,6 +753,205 @@
 				<earcam.profile.report>true</earcam.profile.report>
 			</properties>
 
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>org.revapi</groupId>
+						<artifactId>revapi-maven-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>report</report>
+									<!-- <report>report-aggregate</report> -->
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-report-plugin</artifactId>
+						<version>2.22.0</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>report-only</report>
+									<report>failsafe-report-only</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+		 			<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<inherited>true</inherited>
+								<reports>
+									<report>report</report>
+									<report>report-integration</report>
+									<!-- <report>report-aggregate</report> -->
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<id>main</id>
+								<reports>
+									<report>javadoc-no-fork</report>
+									<!-- <report>aggregate</report> -->
+								</reports>
+							</reportSet>
+							<reportSet>
+								<id>test</id>
+								<reports>
+									<report>test-javadoc-no-fork</report>
+									<!-- <report>test-aggregate</report> -->
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jxr-plugin</artifactId>
+						<version>2.5</version>
+						<configuration>
+							<bottom>
+								Copyright © {inceptionYear}―{currentYear}
+								{organizationName}. All rights reserved.. 
+							</bottom>
+						</configuration>
+						<reportSets>
+							<reportSet>
+								<id>jxr</id>
+								<reports>
+									<report>jxr</report>
+									<report>test-jxr</report>
+									<!-- <report>aggregate</report> -->
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>jdepend-maven-plugin</artifactId>
+						<version>2.0</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>generate-no-fork</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>3.1.1</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>analyze-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>license-maven-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>third-party-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<version>2.9</version>
+						<configuration>
+							<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+						</configuration>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>taglist-maven-plugin</artifactId>
+						<version>2.4</version>
+						<configuration>
+								<tagListOptions>
+									<tagClasses>
+										<tagClass>
+											<displayName>FIXME</displayName>
+											<tags>
+												<tag>
+													<matchString>FIXME</matchString>
+												</tag>
+											</tags>
+										</tagClass>
+										<tagClass>
+											<displayName>TODO</displayName>
+											<tags>
+												<tag>
+													<matchString>TODO</matchString>
+												</tag>
+											</tags>
+										</tagClass>
+										<tagClass>
+											<displayName>Deprecation</displayName>
+											<tags>
+												<tag>
+													<matchString>@deprecated</matchString>
+												</tag>
+											</tags>
+										</tagClass>
+									</tagClasses>
+								</tagListOptions>
+							</configuration>
+					</plugin>
+		
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>2.5</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>dependency-updates-report</report>
+									<report>plugin-updates-report</report>
+									<report>property-updates-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -774,13 +963,29 @@
 						<groupId>org.pitest</groupId>
 						<artifactId>pitest-maven</artifactId>
 					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-					</plugin>
 				</plugins>
 			</build>
+		</profile>
+
+
+		<profile>
+			<id>site-check</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+
+			<properties>
+				<earcam.profile.site.check>true</earcam.profile.site.check>
+				
+				<skipTests>true</skipTests>
+				<skipITs>true</skipITs>
+				<generateReports>false</generateReports>
+			</properties>
+			
+			<build>
+				<defaultGoal>clean   site   site:stage</defaultGoal>
+
+			</build>			
 		</profile>
 
 		<profile>
@@ -810,16 +1015,16 @@
 										<requireProperty>
 											<property>earcam.profile.analyse</property>
 											<regex>^true$</regex>
-											<message>Profile "analyse" must be active</message>
+											<message>Profile "analyse" must be active. To build "site" goal without reports, don't use "site" profile and speed up with -DgenerateReports=false</message>
 										</requireProperty>
 
 										<requireProperty>
 											<property>earcam.profile.report</property>
 											<regex>^true$</regex>
-											<message>Profile "report" must be active</message>
+											<message>Profile "report" must be active. To build "site" goal without reports, don't use "site" profile and speed up with -DgenerateReports=false</message>
 										</requireProperty>
 									</rules>
-									<fail>true</fail>
+									<fail></fail>
 								</configuration>
 							</execution>
 						</executions>
@@ -842,50 +1047,6 @@
 								<goals>
 									<goal>generate</goal>
 								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
-			<id>publish-site</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<build>
-				<defaultGoal>site:deploy</defaultGoal>
-				
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-site-plugin</artifactId>
-						<configuration>
-							<skipDeploy>true</skipDeploy><!-- this skips the site-deploy lifecycle phase, rather than just the plugin's execution -->
-						</configuration>
-					</plugin>
-					
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>enforce-active-profiles</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-								<configuration>
-									<rules>
-										<requireProperty>
-											<property>earcam.profile.site</property>
-											<regex>^true$</regex>
-											<message>Profile "site" must be active</message>
-										</requireProperty>
-									</rules>
-									<fail>true</fail>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -978,16 +1139,18 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
+						<inherited>true</inherited>
 						<configuration>
-							<argLine>${surefire.argLine} -XX:MaxPermSize=512m</argLine>
+							<argLine>${surefire.argLine}</argLine>
 						</configuration>
 					</plugin>					
 					
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-failsafe-plugin</artifactId>
+						<inherited>true</inherited>
 						<configuration>
-							<argLine>${failsafe.argLine} -XX:MaxPermSize=512m</argLine>
+							<argLine>${failsafe.argLine}</argLine>
 						</configuration>
 					</plugin>
 
