@@ -1,4 +1,4 @@
-# io.earcam.maven [![Build Status](https://travis|ci.org/earcam/io.earcam.maven.svg?branch=master)](https://travis|ci.org/earcam/io.earcam.maven) [![Maven Central](https://maven|badges.herokuapp.com/maven|central/io.earcam/io.earcam.maven/badge.svg)](https://maven|badges.herokuapp.com/maven|central/io.earcam/io.earcam.maven)
+# io.earcam.maven [![Build Status](https://travis-ci.org/earcam/io.earcam.maven.svg?branch=master)](https://travis-ci.org/earcam/io.earcam.maven) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.earcam/io.earcam.maven/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.earcam/io.earcam.maven)
 
 
 
