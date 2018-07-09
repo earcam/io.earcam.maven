@@ -1,6 +1,3 @@
-// Additional skin Javascript
-// ++++++++++++++++++++++++++++++++++++++++++
-
 !function ($) {
 
 	$(function(){
@@ -16,7 +13,10 @@
 		// Note: only run if `hljs` exists
 		if (typeof hljs != 'undefined')
 		{
-			$('pre.source').each(function(i, e) {hljs.highlightBlock(e)});
+			hljs.configure({
+				languages: ['java', 'xml']
+			});
+			$('pre.source, div.source').each(function(i, e) {hljs.highlightBlock(e)});
 		}
 
 	})
