@@ -4,7 +4,7 @@
 
 	<groupId>io.earcam</groupId>
 	<artifactId>io.earcam.maven</artifactId>
-	<version>2.2.1</version>
+	<version>2.2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>${project.artifactId}</name>
@@ -60,7 +60,7 @@
 		<connection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</connection>
 		<developerConnection>scm:git:ssh://git@bitbucket.org/earcam/io.earcam.maven.git</developerConnection>
 		<url>http://bitbucket.org/earcam/io.earcam.maven.git</url>
-		<tag>v2.2.1</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<ciManagement>
 		<system>Jenkins</system>
@@ -79,7 +79,7 @@
 
 	<properties>
 		<!-- can't use ${project.version} for dependency in maven-site-plugin as inherited first then resolved-->
-		<earcam.maven.project.version>2.2.1</earcam.maven.project.version>
+		<earcam.maven.project.version>2.2.2-SNAPSHOT</earcam.maven.project.version>
 	
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
