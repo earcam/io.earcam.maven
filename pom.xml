@@ -219,6 +219,12 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.7.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${version.maven.plugin.site}</version>
 					<configuration>
@@ -641,6 +647,10 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 
+			<properties>
+				<toolchain.jdk.vendor>oracle</toolchain.jdk.vendor>
+			</properties>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -650,9 +660,20 @@
 							<toolchains>
 								<jdk>
 									<version>${version.java}</version>
-									<vendor>oracle</vendor>
+									<vendor>${toolchain.jdk.vendor}</vendor>
 								</jdk>
 							</toolchains>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<jdkToolchain>
+								<version>${version.java}</version>
+								<vendor>${toolchain.jdk.vendor}</vendor>
+							</jdkToolchain>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -665,7 +686,11 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-			
+
+			<properties>
+				<toolchain.jdk.vendor>azul</toolchain.jdk.vendor>
+			</properties>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -675,9 +700,20 @@
 							<toolchains>
 								<jdk>
 									<version>${version.java}</version>
-									<vendor>azul</vendor>
+									<vendor>${toolchain.jdk.vendor}</vendor>
 								</jdk>
 							</toolchains>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<jdkToolchain>
+								<version>${version.java}</version>
+								<vendor>${toolchain.jdk.vendor}</vendor>
+							</jdkToolchain>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -690,7 +726,11 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-			
+
+			<properties>
+				<toolchain.jdk.vendor>openjdk</toolchain.jdk.vendor>
+			</properties>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -700,9 +740,20 @@
 							<toolchains>
 								<jdk>
 									<version>${version.java}</version>
-									<vendor>openjdk</vendor>
+									<vendor>${toolchain.jdk.vendor}</vendor>
 								</jdk>
 							</toolchains>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<jdkToolchain>
+								<version>${version.java}</version>
+								<vendor>${toolchain.jdk.vendor}</vendor>
+							</jdkToolchain>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -716,7 +767,11 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-			
+
+			<properties>
+				<toolchain.jdk.vendor>eclipse</toolchain.jdk.vendor>
+			</properties>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -726,11 +781,22 @@
 							<toolchains>
 								<jdk>
 									<version>${version.java}</version>
-									<vendor>eclipse</vendor>
+									<vendor>${toolchain.jdk.vendor}</vendor>
 								</jdk>
 							</toolchains>
 						</configuration>
-					</plugin>				
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<jdkToolchain>
+								<version>${version.java}</version>
+								<vendor>${toolchain.jdk.vendor}</vendor>
+							</jdkToolchain>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -1167,7 +1233,7 @@
 					</plugin>
 				</plugins>
 			</build>			
-		</profile>	
+		</profile>
 
 		<profile>
 			<id>distribute</id>
