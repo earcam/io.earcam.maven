@@ -17,7 +17,8 @@ Profiles are inherited, using the enforcer plugin with properties where interdep
 |jdk-openj9     | toolchains |
 |report         | reporting plugins (no aggregates) |
 |site           | full monty; enforces that profiles "analyse" and "report" are run etc |
-|site-check     | just render the site's custom content, as quickly as possible (no reports) |
+|site-graphic   | generate any images required for site |
+|site-check     | just render the site's custom content, as quickly as possible (no reports but must have graphics) |
 |sonar          | sonarqube integration |
 |analyse        | coverage and pitest |
 |distribute     | adds signature, attaches extra artifacts (source, docs) |

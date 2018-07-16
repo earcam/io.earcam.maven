@@ -416,6 +416,30 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-doap-plugin</artifactId>
+					<version>1.2</version>
+					<configuration>
+						<doapOptions>
+							<!-- ISSUE: doesn't correctly report multiple licenses ... dynamically -->
+							<shortdesc>${project.artifactId}</shortdesc>
+							<language>en</language>
+							<programmingLanguage>java</programmingLanguage>
+							<downloadPage>${project.url}</downloadPage>
+						</doapOptions>
+					</configuration>
+					<executions>
+						<execution>
+							<id>site</id>
+							<phase>site</phase>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-invoker-plugin</artifactId>
 					<version>3.1.0</version>
 				</plugin>
@@ -1035,6 +1059,58 @@
 
 
 		<profile>
+			<id>site-graphic</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			
+			<properties>
+				<earcam.profile.site.graphic>true</earcam.profile.site.graphic>
+			</properties>
+			
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.ferstl</groupId>
+						<artifactId>depgraph-maven-plugin</artifactId>
+						<version>3.1.0</version>
+						<configuration>
+							<graphFormat>dot</graphFormat>
+							<createImage>true</createImage>
+					   		<imageFormat>png</imageFormat>
+					   		<outputDirectory>${project.reporting.outputDirectory}/img</outputDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<id>module-graph</id>
+								<phase>pre-site</phase>
+								<goals>
+									<goal>aggregate</goal>
+								</goals>
+								<configuration>
+									<includes>${project.artifactId}</includes>
+							   		<scope>runtime</scope>
+							   		<outputFileName>module-graph</outputFileName>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>dependency-graph</id>
+								<phase>pre-site</phase>
+								<goals>
+									<goal>graph</goal>
+								</goals>
+								<configuration>
+							   		<outputFileName>dependency-graph</outputFileName>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>			
+		</profile>
+
+		<profile>
 			<id>site-check</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -1050,7 +1126,40 @@
 			
 			<build>
 				<defaultGoal>clean   site   site:stage</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>enforce-active-profiles</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireProperty>
+											<property>earcam.profile.site.graphic</property>
+											<regex>^true$</regex>
+											<message>Profile "site-graphic" must be active. To build "site" goal without extra graphics, don't use "site-check" profile</message>
+										</requireProperty>
+									</rules>
+									<fail />
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-site-plugin</artifactId>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-doap-plugin</artifactId>
+					</plugin>
+				</plugins>
 			</build>			
 		</profile>
 
@@ -1085,6 +1194,12 @@
 										</requireProperty>
 
 										<requireProperty>
+											<property>earcam.profile.site.graphic</property>
+											<regex>^true$</regex>
+											<message>Profile "site-graphic" must be active. To build "site" goal without extra graphics, don't use "site" profile and speed up with -DgenerateReports=false</message>
+										</requireProperty>
+
+										<requireProperty>
 											<property>earcam.profile.report</property>
 											<regex>^true$</regex>
 											<message>Profile "report" must be active. To build "site" goal without reports, don't use "site" profile and speed up with -DgenerateReports=false</message>
@@ -1104,17 +1219,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-doap-plugin</artifactId>
-						<!-- ISSUE: doesn't correctly report multiple licenses -->
-						<version>1.2</version>
-						<executions>
-							<execution>
-								<id>site</id>
-								<phase>site</phase>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>
