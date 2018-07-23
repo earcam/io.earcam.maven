@@ -44,7 +44,7 @@
 			<name>Caspar J. MacRae</name>
 			<id>earcam</id>
 			<timezone>Europe/London</timezone>
-			<url>https://ea.rc.am</url>
+			<url>https://earcam.io</url>
 		</developer>
 	</developers>
 
@@ -538,13 +538,6 @@
 						<artifactId>maven-enforcer-plugin</artifactId>
 						<configuration>
 							<rules>
-								<banTransitiveDependencies>
-									<excludes>
-										<exclude>*:*:*:*:test</exclude>
-										<exclude>*:*:*:*:system</exclude>
-									</excludes>
-								</banTransitiveDependencies>
-								<!-- <dependencyConvergence /> --> <!-- can't configure dependencyConvergence to ignore test dependencies ... -->
 								<requireMavenVersion>
 									<version>${version.min.maven}</version>
 								</requireMavenVersion>
@@ -1102,6 +1095,7 @@
 								</goals>
 								<configuration>
 							   		<outputFileName>dependency-graph</outputFileName>
+							   		<scope>runtime</scope>
 								</configuration>
 							</execution>
 						</executions>

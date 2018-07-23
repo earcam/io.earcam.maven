@@ -1817,6 +1817,11 @@
 	<script src="$protocol//cdnjs.cloudflare.com/ajax/libs/highlight.js/$highlightJsVersion/highlight.min.js"></script>
 #*	*##end#*
 
+	*##if ( !$config.not( "anchorJs" ) )#*
+		// if not disabled, include anchor js *###
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
+#*	*##end#*
+
 	*##if ( $config.endContent )#*
 	#htmlContent ( $config.endContent.getChildren() )
 #*	*##end##
@@ -1844,7 +1849,22 @@
 			loadSearch(el);
 		});
 	</script>
-#*	*##end##
+#*	*##end#*
+
+*##if ( !$config.not( "anchorJs" ) )#*
+*#
+	<script>
+		anchors.options.placement = 'left';
+		anchors.options.visible = 'hover';
+		anchors.options.icon = '\u00A7';
+		anchors.options.truncate = 64;
+
+		document.addEventListener("DOMContentLoaded", function(e) { 
+			anchors.add();
+		});
+	</script>
+#*
+*##end##
 
 	</body>
 </html>
