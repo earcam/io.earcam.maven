@@ -1059,6 +1059,7 @@
 			
 			<properties>
 				<earcam.profile.site.graphic>true</earcam.profile.site.graphic>
+				<earcam.build.debug>true</earcam.build.debug>
 			</properties>
 			
 			<build>
