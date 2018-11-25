@@ -40,8 +40,6 @@ import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An Apache Velocity tool that provides utility methods to manipulate HTML code using
@@ -58,8 +56,6 @@ import org.slf4j.LoggerFactory;
 //CHECKSTYLE:OFF
 @DefaultKey("htmlTool")
 public class HtmlTool extends SafeConfig {
-
-	private static final Logger LOG = LoggerFactory.getLogger(HtmlTool.class);
 
 
 	/** A list of all HTML heading classes (h1-6) */
