@@ -97,9 +97,9 @@
 
 		<sonar.java.source>${version.java.platform}</sonar.java.source>
 
-		<version.pitest>1.4.0</version.pitest>
-		<version.jacoco>0.8.1</version.jacoco>
-		<version.forbiddenapis>2.5</version.forbiddenapis>
+		<version.pitest>1.4.3</version.pitest>
+		<version.jacoco>0.8.2</version.jacoco>
+		<version.forbiddenapis>2.6</version.forbiddenapis>
 		
 		<version.maven.plugin.site>3.7.1</version.maven.plugin.site>
 		
@@ -220,7 +220,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.7.0</version>
+					<version>3.8.0</version>
 				</plugin>
 
 				<plugin>
@@ -248,7 +248,7 @@
 				<plugin>
 					<groupId>org.revapi</groupId>
 					<artifactId>revapi-maven-plugin</artifactId>
-					<version>0.10.4</version>
+					<version>0.10.5</version>
 					<configuration>
 						<failOnUnresolvedArtifacts>false</failOnUnresolvedArtifacts>
 						<failOnUnresolvedDependencies>false</failOnUnresolvedDependencies>
@@ -279,7 +279,7 @@
 						<dependency>
 							<groupId>org.revapi</groupId>
 							<artifactId>revapi-java</artifactId>
-							<version>0.18.0</version>
+							<version>0.18.1</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -320,7 +320,7 @@
 						<dependency>
 							<groupId>org.pitest</groupId>
 							<artifactId>pitest-junit5-plugin</artifactId>
-							<version>0.5</version>
+							<version>0.8</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -400,7 +400,7 @@
 				<plugin>
 					<groupId>net.revelc.code.formatter</groupId>
 					<artifactId>formatter-maven-plugin</artifactId>
-					<version>2.7.3</version>
+					<version>2.8.1</version>
 					<configuration>
 						<configFile>META-INF/eclipse/java-formatter.xml</configFile>
 						<configJsFile>META-INF/eclipse/javascript-formatter.xml</configJsFile>
@@ -478,7 +478,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.0</version>
+					<version>2.22.1</version>
 					<inherited>true</inherited>
 					<configuration>
 						<includes>
@@ -493,7 +493,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.22.0</version>
+					<version>2.22.1</version>
 					<inherited>true</inherited>
 					<executions>
 						<execution>
@@ -639,7 +639,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-scm-plugin</artifactId>
-						<version>1.10.0</version>
+						<version>1.11.0</version>
 						<executions>
 							<execution>
 								<id>tidy-fail-scm-uncommitted</id>
@@ -854,7 +854,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-report-plugin</artifactId>
-						<version>2.22.0</version>
+						<version>2.22.1</version>
 						<reportSets>
 							<reportSet>
 								<reports>
